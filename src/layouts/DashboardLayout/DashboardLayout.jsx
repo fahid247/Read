@@ -1,6 +1,8 @@
 import React from "react";
 import { CgProfile } from "react-icons/cg";
-import { FaParachuteBox } from "react-icons/fa";
+import { FaParachuteBox, FaUsers } from "react-icons/fa";
+import { MdOutlinePayment } from "react-icons/md";
+import { RiContactsBook2Fill } from "react-icons/ri";
 import { Link, NavLink, Outlet } from "react-router";
 
 const DashboardLayout = () => {
@@ -35,7 +37,6 @@ const DashboardLayout = () => {
         </nav>
         {/* Page content here */}
         <Outlet></Outlet>
-        <div className="p-4">Page Content</div>
       </div>
 
       <div className="drawer-side is-drawer-close:overflow-visible">
@@ -104,10 +105,32 @@ const DashboardLayout = () => {
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Payment History"
               > 
-                <CgProfile />
+                <MdOutlinePayment/>
                 <span className="is-drawer-close:hidden">Payment History</span>
               </NavLink>
               
+              
+            </li>
+            <li>
+              <NavLink
+                to={"/dashboard/AllUsers"}
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="All Users"
+              > 
+                <FaUsers />
+                <span className="is-drawer-close:hidden">All Users</span>
+              </NavLink>
+              
+            </li>
+            <li>
+              <NavLink
+                to={'/dashboard/manageBooks'}
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Manage Books"
+              > 
+                <RiContactsBook2Fill />
+                <span className="is-drawer-close:hidden">Manage Books</span>
+              </NavLink>
               
             </li>
 
