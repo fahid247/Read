@@ -24,7 +24,7 @@ const LatestBooks = () => {
     fetchBooks();
   }, [Axios]);
 
-  console.log(books);
+  //console.log(books);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -58,10 +58,10 @@ const LatestBooks = () => {
   };
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-base-300">
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800">Latest Books</h2>
+          <h2 className="text-3xl font-bold text-primary text-[clamp(2rem,3vw,3.25rem)]">Latest Books</h2>
           <button
             onClick={handleShowAll}
             className="bg-primary hover:bg-secondary-content text-white font-semibold px-4 py-2 rounded transition"
@@ -94,7 +94,7 @@ const LatestBooks = () => {
                 </p>
                 <button
                   onClick={() => {
-                    navigate("/viewDetails");
+                    navigate(`/book-details/${book._id}`);
                   }}
                   className="bg-primary hover:bg-secondary-content text-white font-semibold px-4 py-2 rounded transition hover:scale-110  duration-500 cursor-pointer"
                 >

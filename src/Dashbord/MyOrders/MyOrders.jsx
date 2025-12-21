@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/UseAxiosSecure";
 import { Link } from "react-router";
 import Loading from "../../Components/Loading/Loading";
+import Swal from "sweetalert2"; // <-- import SweetAlert2
 
 const MyOrders = () => {
   const { user } = useAuth();
@@ -25,12 +26,34 @@ const MyOrders = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["my-orders"]);
+      Swal.fire({
+        icon: "success",
+        title: "Cancelled!",
+        text: "Your order has been cancelled.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
     },
   });
 
-  if (isLoading) {
-    return <Loading></Loading>;
-  }
+  const handleCancel = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, cancel it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        cancelMutation.mutate(id);
+      }
+    });
+  };
+
+  if (isLoading) return <Loading />;
+
   return (
     <section className="py-16 bg-base-200 min-h-screen">
       <div className="container mx-auto px-4 sm:px-6">
@@ -40,67 +63,39 @@ const MyOrders = () => {
           <p className="text-center">You have no orders yet.</p>
         ) : (
           <>
-            {/* ===== Mobile View (Clear Cards) ===== */}
+            {/* ===== Mobile View ===== */}
             <div className="space-y-4 md:hidden">
               {orders.map((order) => (
-                <div
-                  key={order._id}
-                  className="bg-base-100 rounded-xl shadow p-4"
-                >
-                  {/* Book */}
-                  <h3 className="font-semibold text-lg mb-3">
-                    {order.bookName}
-                  </h3>
+                <div key={order._id} className="bg-base-100 rounded-xl shadow p-4">
+                  <h3 className="font-semibold text-lg mb-3">{order.bookName}</h3>
 
                   <div className="space-y-2 text-sm">
-                    {/* Order Date */}
                     <div className="flex justify-between">
                       <span className="text-gray-500">Order Date</span>
-                      <span className="font-medium">
-                        {new Date(order.orderedAt).toLocaleDateString()}
-                      </span>
+                      <span className="font-medium">{new Date(order.orderedAt).toLocaleDateString()}</span>
                     </div>
 
-                    {/* Order Status */}
                     <div className="flex justify-between items-center">
                       <span className="text-gray-500">Order Status</span>
-                      <span
-                        className={`badge ${
-                          order.orderStatus === "pending"
-                            ? "badge-warning"
-                            : order.orderStatus === "cancelled"
-                            ? "badge-error"
-                            : "badge-success"
-                        }`}
-                      >
+                      <span className={`badge ${order.orderStatus === "pending" ? "badge-warning" : order.orderStatus === "cancelled" ? "badge-error" : "badge-success"}`}>
                         {order.orderStatus}
                       </span>
                     </div>
 
-                    {/* Payment Status */}
                     <div className="flex justify-between items-center">
                       <span className="text-gray-500">Payment</span>
-                      <span
-                        className={`badge ${
-                          order.paymentStatus === "paid"
-                            ? "badge-success"
-                            : "badge-outline"
-                        }`}
-                      >
+                      <span className={`badge ${order.paymentStatus === "paid" ? "badge-success" : "badge-outline"}`}>
                         {order.paymentStatus}
                       </span>
                     </div>
                   </div>
 
-                  {/* Divider */}
                   {order.orderStatus === "pending" && (
                     <>
                       <div className="divider my-3"></div>
-
-                      {/* Actions */}
                       <div className="flex gap-2">
                         <button
-                          onClick={() => cancelMutation.mutate(order._id)}
+                          onClick={() => handleCancel(order._id)}
                           className="btn btn-sm btn-error text-white flex-1"
                         >
                           Cancel Order
@@ -121,7 +116,7 @@ const MyOrders = () => {
               ))}
             </div>
 
-            {/* ===== Desktop / Tablet View (Table) ===== */}
+            {/* ===== Desktop / Tablet View ===== */}
             <div className="hidden md:block overflow-x-auto">
               <table className="table table-zebra w-full">
                 <thead>
@@ -141,26 +136,12 @@ const MyOrders = () => {
                       <td className="font-medium">{order.bookName}</td>
                       <td>{new Date(order.orderedAt).toLocaleDateString()}</td>
                       <td>
-                        <span
-                          className={`badge ${
-                            order.orderStatus === "pending"
-                              ? "badge-warning"
-                              : order.orderStatus === "cancelled"
-                              ? "badge-error"
-                              : "badge-success"
-                          }`}
-                        >
+                        <span className={`badge ${order.orderStatus === "pending" ? "badge-warning" : order.orderStatus === "cancelled" ? "badge-error" : "badge-success"}`}>
                           {order.orderStatus}
                         </span>
                       </td>
                       <td>
-                        <span
-                          className={`badge ${
-                            order.paymentStatus === "paid"
-                              ? "badge-success"
-                              : "badge-outline"
-                          }`}
-                        >
+                        <span className={`badge ${order.paymentStatus === "paid" ? "badge-success" : "badge-outline"}`}>
                           {order.paymentStatus}
                         </span>
                       </td>
@@ -168,7 +149,7 @@ const MyOrders = () => {
                         {order.orderStatus === "pending" && (
                           <>
                             <button
-                              onClick={() => cancelMutation.mutate(order._id)}
+                              onClick={() => handleCancel(order._id)}
                               className="btn btn-sm btn-error text-white"
                             >
                               Cancel
