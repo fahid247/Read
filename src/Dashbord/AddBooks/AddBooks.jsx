@@ -1,13 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import useAxiosSecure from "../../Hooks/UseAxiosSecure";
-import useAuth from "../../Hooks/UseAuth";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import UseAuth from "../../Hooks/UseAuth";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 
 const AddBooks = () => {
-  const axiosSecure = useAxiosSecure();
-  const { user } = useAuth();
+  const axiosSecure = UseAxiosSecure();
+  const { user } = UseAuth();
 
   const navigate = useNavigate();
 
@@ -44,12 +44,13 @@ const AddBooks = () => {
       });
 
       reset();
+      navigate('/dashboard/myBooks');
     } catch (error) {
       console.error(error);
       Swal.fire("Error", "Failed to add book", "error");
     }
 
-    navigate('/dashboard/manageBooks');
+    
     
   };
 
