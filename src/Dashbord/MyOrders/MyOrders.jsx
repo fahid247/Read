@@ -55,9 +55,9 @@ const MyOrders = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <section className="py-16 bg-base-200 min-h-screen">
+    <section className="py-16 bg-base-200 min-h-screen inter">
       <div className="container mx-auto px-4 sm:px-6">
-        <h2 className="text-4xl text-primary my-8 underline font-bold  text-center">
+        <h2 className="text-4xl text-primary my-8 underline font-bold  text-center playfair">
         <span className="text-base-content">My</span>  <span className="text-base-content">Orders</span>
       </h2>
 

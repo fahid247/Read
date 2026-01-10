@@ -16,16 +16,15 @@ const Footer = () => {
         {/* Brand */}
         <div>
             <ReadOnRouteLogo width={120}></ReadOnRouteLogo>
-          <h2 className="text-xl font-bold mb-3">ReadOnRoute</h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 inter">
             Discover, order, and track your favorite books with ease.
           </p>
         </div>
 
         {/* Quick Links */}
         <div>
-          <h3 className="footer-title text-primary font-bold">Quick Links</h3>
-          <ul className="space-y-2 text-sm">
+          <h3 className="footer-title text-primary font-bold inter">Quick Links</h3>
+          <ul className="space-y-2 text-sm playfair">
             <li><a className="link link-hover" href="/">Home</a></li>
             <li><a className="link link-hover" href="/allbooks">Books</a></li>
             <li><a className="link link-hover" href="/dashboard">Dashboard</a></li>
@@ -35,8 +34,8 @@ const Footer = () => {
 
         {/* Contact Details */}
         <div>
-          <h3 className="footer-title text-primary font-bold">Contact</h3>
-          <ul className="text-sm space-y-2">
+          <h3 className="footer-title text-primary font-bold inter">Contact</h3>
+          <ul className="text-sm space-y-2 playfair">
             <li>Email: support@readonroute.com</li>
             <li>Phone: +880 1234-567890</li>
             <li>Dhaka, Bangladesh</li>
@@ -45,7 +44,7 @@ const Footer = () => {
 
         {/* Social */}
         <div>
-          <h3 className="footer-title text-primary font-bold">Follow Us</h3>
+          <h3 className="footer-title text-primary font-bold inter">Follow Us</h3>
           <div className="flex gap-4 text-xl">
             <a
               

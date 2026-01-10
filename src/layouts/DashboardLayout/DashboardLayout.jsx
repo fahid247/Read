@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BiBookAdd } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { FaParachuteBox, FaUsers } from "react-icons/fa";
@@ -10,73 +10,89 @@ import UseRole from "../../Hooks/UseRole";
 import { FaBookBookmark } from "react-icons/fa6";
 import { TbJewishStarFilled } from "react-icons/tb";
 import Loading from "../../Components/Loading/Loading";
+import { BsMoonStarsFill, BsSunFill } from "react-icons/bs";
 
 const DashboardLayout = () => {
-  const { role , roleLoading } = UseRole();
-  //console.log(role);
+  const { role, roleLoading } = UseRole();
+
+  // Theme toggle state
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
         {/* Navbar */}
-        <nav className="navbar w-full bg-base-300">
-          <label
-            htmlFor="my-drawer-4"
-            aria-label="open sidebar"
-            className="btn btn-square btn-ghost"
-          >
-            {/* Sidebar toggle icon */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              strokeWidth="2"
-              fill="none"
-              stroke="currentColor"
-              className="my-1.5 inline-block size-4"
+        <nav className="navbar w-full bg-base-300 flex justify-between">
+          <div className="flex items-center gap-3">
+            <label
+              htmlFor="my-drawer-4"
+              aria-label="open sidebar"
+              className="btn btn-square btn-ghost"
             >
-              <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-              <path d="M9 4v16"></path>
-              <path d="M14 10l2 2l-2 2"></path>
-            </svg>
-          </label>
-          <div className="px-4">
-           
-            
-            { roleLoading ? <Loading></Loading> :(
-              <>
-                <h1 className="text-base-content capitalize text-[clamp(2rem,3.5vw,3.75rem)] font-bold">
-                  {role} Dashboard
-                </h1>
-              </>
+              {/* Sidebar toggle icon */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2"
+                fill="none"
+                stroke="currentColor"
+                className="my-1.5 inline-block size-4"
+              >
+                <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                <path d="M9 4v16" />
+                <path d="M14 10l2 2l-2 2" />
+              </svg>
+            </label>
+
+            {roleLoading ? (
+              <Loading />
+            ) : (
+              <h1 className="text-base-content playfair capitalize text-[clamp(2rem,3.5vw,3.75rem)] font-bold">
+                {role} Dashboard
+              </h1>
             )}
           </div>
-          
+
+          {/* Theme Toggle Button */}
+          <button
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            className="btn btn-ghost btn-circle mr-2"
+            aria-label="Toggle theme"
+          >
+            {theme === "light" ? (
+              <BsMoonStarsFill className="text-lg" />
+            ) : (
+              <BsSunFill className="text-lg" />
+            )}
+          </button>
         </nav>
+
         <div className="w-full h-1 bg-primary"></div>
 
-        {/* Page content here */}
-        <Outlet></Outlet>
+        {/* Page content */}
+        <Outlet />
       </div>
 
-      <div className="drawer-side is-drawer-close:overflow-visible">
-        <label
-          htmlFor="my-drawer-4"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        ></label>
+      {/* Sidebar */}
+      <div className="drawer-side">
+        <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
         <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
-          {/* Sidebar content here */}
           <ul className="menu w-full grow">
-            {/* List item */}
+            {/* Home */}
             <li>
               <Link
                 to={"/"}
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >
-                {/* Home icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -93,8 +109,8 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">Homepage</span>
               </Link>
             </li>
-            {/*our dashboard links */}
 
+            {/* Dashboard Links */}
             <li>
               <NavLink
                 to={"/dashboard/my-profile"}
@@ -128,7 +144,6 @@ const DashboardLayout = () => {
                     <span className="is-drawer-close:hidden">My wish List</span>
                   </NavLink>
                 </li>
-
                 <li>
                   <NavLink
                     to={"/dashboard/my-paymentHistory"}
@@ -156,7 +171,6 @@ const DashboardLayout = () => {
                     <span className="is-drawer-close:hidden">Manage Books</span>
                   </NavLink>
                 </li>
-
                 <li>
                   <NavLink
                     to={"/dashboard/AllUsers"}
@@ -182,7 +196,6 @@ const DashboardLayout = () => {
                     <span className="is-drawer-close:hidden">Add Books</span>
                   </NavLink>
                 </li>
-
                 <li>
                   <NavLink
                     to={"/dashboard/myBooks"}
@@ -193,7 +206,6 @@ const DashboardLayout = () => {
                     <span className="is-drawer-close:hidden">My Books</span>
                   </NavLink>
                 </li>
-
                 <li>
                   <NavLink
                     to={"/dashboard/librarianOrders"}
@@ -208,32 +220,6 @@ const DashboardLayout = () => {
                 </li>
               </>
             )}
-
-            {/* List item */}
-            <li>
-              <button
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Settings"
-              >
-                {/* Settings icon */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  fill="none"
-                  stroke="currentColor"
-                  className="my-1.5 inline-block size-4"
-                >
-                  <path d="M20 7h-9"></path>
-                  <path d="M14 17H5"></path>
-                  <circle cx="17" cy="17" r="3"></circle>
-                  <circle cx="7" cy="7" r="3"></circle>
-                </svg>
-                <span className="is-drawer-close:hidden">Settings</span>
-              </button>
-            </li>
           </ul>
         </div>
       </div>

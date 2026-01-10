@@ -39,9 +39,9 @@ const MyWishList = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
+    <div className="max-w-7xl mx-auto px-4 py-10 inter">
       {/* Page Title */}
-      <h2 className="text-4xl text-primary underline font-bold mb-8 text-center">
+      <h2 className="text-4xl text-primary underline font-bold mb-8 text-center playfair">
         <span className="text-base-content">My</span> <span className="text-primary">Wish</span> <span className="text-base-content">List</span>
       </h2>
 
@@ -70,7 +70,7 @@ const MyWishList = () => {
 
               {/* Card Body */}
               <div className="p-4 space-y-2">
-                <h3 className="text-lg font-semibold line-clamp-2">
+                <h3 className="text-lg font-semibold line-clamp-2 playfair">
                   {item.bookName}
                 </h3>
 

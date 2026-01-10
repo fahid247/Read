@@ -34,8 +34,8 @@ const MyBooks = () => {
   }
 
   return (
-    <section className="p-6">
-      <h2 className="text-4xl text-primary underline font-bold mb-8 text-center">
+    <section className="p-6 inter">
+      <h2 className="text-4xl text-primary underline font-bold mb-8 text-center playfair">
         <span className="text-base-content">My</span> <span className="text-primary">Added</span> <span className="text-base-content">Books</span>
       </h2>
 
@@ -84,7 +84,7 @@ const MyBooks = () => {
                   <td className="space-x-2">
                     <Link
                       to={`/dashboard/edit-book/${book._id}`}
-                      className="btn btn-sm btn-primary"
+                      className="btn btn-sm btn-primary hover:btn-info"
                     >
                       Edit
                     </Link>
@@ -98,7 +98,7 @@ const MyBooks = () => {
                         })
                       }
                       className={`btn btn-sm ${
-                        book.status === "Published" ? "btn-warning" : "btn-success"
+                        book.status === "Published" ? "btn-warning hover:btn-accent" : "btn-success"
                       }`}
                     >
                       {book.status === "Published" ? "Unpublish" : "Publish"}

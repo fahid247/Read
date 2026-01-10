@@ -2,8 +2,19 @@ import React from "react";
 import { Link } from "react-router";
 import useAuth from "../../Hooks/UseAuth";
 import Loading from "../../Components/Loading/Loading";
-import { UserIcon, BookOpenIcon, ClipboardDocumentListIcon, PlusCircleIcon, UsersIcon, ChartBarIcon } from "@heroicons/react/24/solid";
+import {
+  UserIcon,
+  BookOpenIcon,
+  ClipboardDocumentListIcon,
+  PlusCircleIcon,
+  UsersIcon,
+  ChartBarIcon,
+} from "@heroicons/react/24/solid";
 import UseRole from "../../Hooks/UseRole";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+import { TbJewishStar } from "react-icons/tb";
+import { MdOutlinePayments } from "react-icons/md";
 
 const DashboardHome = () => {
   const { user } = useAuth();
@@ -12,99 +23,159 @@ const DashboardHome = () => {
   if (isRoleLoading) return <Loading />;
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">
-        Welcome, {user?.displayName || "User"} 👋
-      </h2>
+    <section className="p-6 max-w-7xl mx-auto">
+      {/* Header */}
+      <motion.h2
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-3xl font-bold mb-10 text-base-content playfair"
+      >
+        Welcome back,{" "}
+        <span className="text-primary">
+          {user?.displayName || "User"}
+        </span>{" "}
+        👋
+      </motion.h2>
 
       {/* USER DASHBOARD */}
       {role === "user" && (
-        <div className="grid md:grid-cols-2 gap-6">
+        <DashboardGrid>
           <DashboardCard
             title="My Orders"
             desc="View your order history"
-            icon={<ClipboardDocumentListIcon className="w-10 h-10 text-white" />}
-            bgColor="bg-blue-500"
+            icon={<ClipboardDocumentListIcon />}
+            gradient="from-primary to-indigo-500"
             link="/dashboard/my-orders"
+          />
+          <DashboardCard
+            title="My Wishlist"
+            desc="View your wishlist"
+            icon={<TbJewishStar />}
+            gradient="from-emerald-500 to-yellow-500"
+            link="/dashboard/my-myWishList"
+          />
+          <DashboardCard
+            title="Payment History"
+            desc="Look at Your payments"
+            icon={<MdOutlinePayments />}
+            gradient="from-indigo-400 to-indigo-600"
+            link="/dashboard/my-paymentHistory"
           />
           <DashboardCard
             title="My Profile"
             desc="Manage your account"
-            icon={<UserIcon className="w-10 h-10 text-white" />}
-            bgColor="bg-green-500"
+            icon={<UserIcon />}
+            gradient="from-emerald-500 to-green-600"
             link="/dashboard/profile"
           />
-        </div>
+        </DashboardGrid>
       )}
 
       {/* LIBRARIAN DASHBOARD */}
       {role === "librarian" && (
-        <div className="grid md:grid-cols-3 gap-6">
+        <DashboardGrid>
           <DashboardCard
             title="My Books"
             desc="Books you added"
-            icon={<BookOpenIcon className="w-10 h-10 text-white" />}
-            bgColor="bg-indigo-500"
+            icon={<BookOpenIcon />}
+            gradient="from-indigo-500 to-violet-600"
             link="/dashboard/myBooks"
           />
           <DashboardCard
             title="Orders"
             desc="Orders for your books"
-            icon={<ClipboardDocumentListIcon className="w-10 h-10 text-white" />}
-            bgColor="bg-blue-500"
+            icon={<ClipboardDocumentListIcon />}
+            gradient="from-blue-500 to-sky-600"
             link="/dashboard/librarianOrders"
           />
           <DashboardCard
             title="Add Book"
             desc="Add a new book"
-            icon={<PlusCircleIcon className="w-10 h-10 text-white" />}
-            bgColor="bg-green-500"
+            icon={<PlusCircleIcon />}
+            gradient="from-indigo-400 to-indigo-600"
             link="/dashboard/addBooks"
           />
-        </div>
+          <DashboardCard
+            title="My Profile"
+            desc="Manage your account"
+            icon={<UserIcon />}
+            gradient="from-emerald-500 to-green-600"
+            link="/dashboard/profile"
+          />
+        </DashboardGrid>
       )}
 
       {/* ADMIN DASHBOARD */}
       {role === "admin" && (
-        <div className="grid md:grid-cols-3 gap-6">
+        <DashboardGrid >
           <DashboardCard
             title="Manage Users"
             desc="Control user roles"
-            icon={<UsersIcon className="w-10 h-10 text-white" />}
-            bgColor="bg-red-500"
+            icon={<UsersIcon />}
+            gradient="from-rose-500 to-red-600"
             link="/dashboard/AllUsers"
           />
           <DashboardCard
             title="Manage Books"
             desc="View & manage books"
-            icon={<BookOpenIcon className="w-10 h-10 text-white" />}
-            bgColor="bg-indigo-500"
+            icon={<BookOpenIcon />}
+            gradient="from-indigo-500 to-purple-600"
             link="/dashboard/manageBooks"
           />
           <DashboardCard
             title="Overview"
             desc="Platform statistics"
-            icon={<ChartBarIcon className="w-10 h-10 text-white" />}
-            bgColor="bg-yellow-500"
+            icon={<ChartBarIcon />}
+            gradient="from-yellow-400 to-amber-500"
             link="/dashboard/AllUsers"
           />
-        </div>
+        </DashboardGrid>
       )}
-    </div>
+    </section>
   );
 };
 
-const DashboardCard = ({ title, desc, icon, bgColor, link }) => (
+/* ================= GRID ================= */
+const DashboardGrid = ({ children }) => (
+  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {children}
+  </div>
+);
+
+/* ================= CARD ================= */
+const DashboardCard = ({ title, desc, icon, gradient, link }) => (
   <Link to={link}>
-    <div className="card flex items-center p-5 shadow-lg hover:shadow-2xl transition rounded-xl bg-white relative overflow-hidden">
-      <div className={`p-4 rounded-full ${bgColor} mr-4 flex items-center justify-center`}>
-        {icon}
+    <motion.div
+      whileHover={{ y: -6 }}
+      transition={{ type: "spring", stiffness: 200 }}
+      className="
+        bg-base-100 rounded-2xl p-6 flex items-center gap-5
+        shadow-md hover:shadow-xl
+        dark:border dark:border-base-300
+        transition inter
+      "
+    >
+      {/* Icon */}
+      <div
+        className={`
+          w-14 h-14 rounded-xl flex items-center justify-center
+          bg-linear-to-br ${gradient} text-white
+          shadow-md
+        `}
+      >
+        {React.cloneElement(icon, { className: "w-7 h-7" })}
       </div>
+
+      {/* Text */}
       <div>
-        <h3 className="text-lg text-center font-semibold">{title}</h3>
-        <p className="text-sm  text-gray-500">{desc}</p>
+        <h3 className="text-lg font-semibold text-base-content">
+          {title}
+        </h3>
+        <p className="text-sm text-base-content/70">
+          {desc}
+        </p>
       </div>
-    </div>
+    </motion.div>
   </Link>
 );
 

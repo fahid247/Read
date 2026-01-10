@@ -15,11 +15,14 @@ const PaymentHistory = () => {
   } = useQuery({
     queryKey: ["my-payments", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/payments?customerEmail=${user.email}`);
+      const res = await axiosSecure.get(
+        `/payments?customerEmail=${user.email}`
+      );
       return res.data;
     },
   });
 
+  // Loading Skeleton
   if (isLoading) {
     return (
       <div className="p-4">
@@ -28,6 +31,7 @@ const PaymentHistory = () => {
     );
   }
 
+  // Empty State
   if (!payments.length) {
     return (
       <div className="text-center py-10">
@@ -37,9 +41,10 @@ const PaymentHistory = () => {
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-4xl text-primary my-8 underline font-bold  text-center">
-        <span className="text-base-content">Payment</span>  <span className="text-base-content">History</span>
+    <div className="p-4 inter">
+      <h2 className="text-4xl my-8 font-bold text-center playfair">
+        <span className="text-base-content">Payment</span>{" "}
+        <span className="text-primary">History</span>
       </h2>
 
       {/* ================= Mobile View (Cards) ================= */}
@@ -47,9 +52,9 @@ const PaymentHistory = () => {
         {payments.map((payment) => (
           <div
             key={payment._id}
-            className="card bg-base-100 shadow-md border"
+            className="card bg-base-100 shadow-md border hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
           >
-            <div className="card-body p-4 text-sm">
+            <div className="card-body p-4 text-sm space-y-1">
               <p>
                 <span className="font-semibold">Order Name:</span>{" "}
                 {payment.orderName}
@@ -90,15 +95,19 @@ const PaymentHistory = () => {
               <th>Date</th>
             </tr>
           </thead>
+
           <tbody>
             {payments.map((payment, index) => (
-              <tr key={payment._id}>
+              <tr
+                key={payment._id}
+                className="hover:bg-primary/10 transition-colors duration-200 cursor-pointer"
+              >
                 <td>{index + 1}</td>
                 <td className="font-mono text-xs">
                   {payment.orderName}
                 </td>
                 <td>৳{payment.amount}</td>
-                <td className="capitalize">
+                <td className="text-xs">
                   {payment.transactionId}
                 </td>
                 <td>

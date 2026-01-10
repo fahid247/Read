@@ -1,5 +1,5 @@
 import React from "react";
-import image from "../../assets/Screenshot 2025-12-17 113021.png";
+import image from "../../assets/ChatGPT Image Jan 10, 2026, 09_24_04 PM.png";
 import { useForm } from "react-hook-form";
 import ReadOnRouteLogo from "../../Components/Logo/ReadOnRouteLogo";
 import { Link, Navigate, useLocation, useNavigate } from "react-router";
@@ -250,8 +250,8 @@ const Register = () => {
           </div>
         </div>
       </div>
-      <div className="hidden md:block">
-        <div className="picture flex-1 p-3 flex justify-center items-center bg-base-100">
+      <div className="hidden md:block flex-1">
+        <div className="picture  p-3 flex justify-center items-center bg-base-100">
         <img src={image} className="max-h-[92vh] rounded-2xl mx-auto" />
       </div>
       </div>

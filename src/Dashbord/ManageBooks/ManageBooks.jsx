@@ -61,8 +61,8 @@ const {
   }
 
   return (
-    <div className="p-4 md:p-6">
-        <h2 className="text-4xl text-primary my-8 underline font-bold  text-center">
+    <div className="p-4 md:p-6 inter">
+        <h2 className="text-4xl playfair text-primary my-8 underline font-bold  text-center">
         <span className="text-base-content">Manage</span>  <span className="text-base-content">Books</span>
       </h2>
       <h2 className="text-xl font-medium mb-6">

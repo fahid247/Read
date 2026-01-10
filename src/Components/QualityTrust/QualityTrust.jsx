@@ -1,5 +1,8 @@
 import React from "react";
 import { ShieldCheck, Truck, MapPin, Star } from "lucide-react";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router";
 
 const promises = [
   {
@@ -28,43 +31,80 @@ const promises = [
   },
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.15 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  hover: { scale: 1.05, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" },
+};
+
 const QualityTrust = () => {
+    const navigate = useNavigate();
   return (
     <section className="bg-base-200 py-20">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800">
+          <h2 className="text-4xl md:text-5xl playfair font-extrabold text-primary">
             Our <span className="text-primary">Quality & Trust</span> Promise
           </h2>
-          <p className="mt-4 text-gray-600 text-lg max-w-2xl mx-auto">
+          <p className="mt-4 text-base-content/70 inter text-lg max-w-2xl mx-auto">
             At ReadOnRoute, we are committed to providing reliable service, verified books, and complete satisfaction for both readers and librarians.
           </p>
         </div>
 
         {/* Promises Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 inter"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {promises.map((promise, index) => (
-            <div
+            <motion.div
               key={index}
-              className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition duration-300 flex flex-col items-center text-center"
+              className="bg-base-100 p-8 rounded-2xl shadow-sm hover:shadow-lg transition cursor-pointer flex flex-col items-center text-center"
+              variants={cardVariants}
+              whileHover="hover"
             >
-              <div className="mb-5">{promise.icon}</div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">{promise.title}</h3>
-              <p className="text-gray-600 text-sm">{promise.description}</p>
-            </div>
+              <motion.div
+                className="mb-5 p-4 rounded-full bg-primary/10 flex items-center justify-center"
+                whileHover={{ scale: 1.1 }}
+              >
+                {promise.icon}
+              </motion.div>
+              <h3 className="text-xl font-semibold text-base-content mb-3">{promise.title}</h3>
+              <p className="text-base-content/70 text-sm">{promise.description}</p>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* CTA */}
-        <div className="mt-16 text-center">
-          <p className="text-gray-700 mb-4 text-lg">
+        <motion.div className="mt-16 text-center">
+          <motion.p
+            className="text-base-content/70 mb-4 text-lg inter"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             Join thousands of readers and librarians who trust ReadOnRoute.
-          </p>
-          <button className="bg-primary text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-primary-dark transition">
-            Explore Books
-          </button>
-        </div>
+          </motion.p>
+          <motion.button
+                    onClick={() => navigate("/allbooks")}
+                    className="btn btn-primary px-8 py-3  rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 playfair"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                  >
+                    Explore Books
+                  </motion.button>
+        </motion.div>
       </div>
     </section>
   );

@@ -13,7 +13,7 @@ const LatestBooks = () => {
   const { data: books = [], isLoading, isError } = useQuery({
     queryKey: ["latestBooks"],
     queryFn: async () => {
-      const res = await axios.get("/public/books?limit=6");
+      const res = await axios.get("/public/books?limit=8");
       return res.data;
     },
     staleTime: 1000 * 60 * 5,
@@ -40,12 +40,12 @@ const LatestBooks = () => {
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-12 gap-4">
-          <h2 className="text-[clamp(2rem,3vw,3rem)] font-bold text-primary">
+          <h2 className="text-[clamp(2rem,3vw,3rem)] playfair font-bold text-primary">
             Latest Books
           </h2>
           <button
             onClick={() => navigate("/allbooks")}
-            className="btn bg-primary text-primary-content hover:bg-accent transition-all duration-300 px-6 py-2 rounded-lg shadow"
+            className="btn playfair bg-primary text-primary-content hover:bg-accent transition-all duration-300 px-6 py-2 rounded-lg shadow"
           >
             View All
           </button>
@@ -53,7 +53,7 @@ const LatestBooks = () => {
 
         {/* Books Grid */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 inter"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -62,7 +62,7 @@ const LatestBooks = () => {
             books.map((book) => (
               <motion.article
                 key={book._id}
-                className="bg-base-100 rounded-xl overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col"
+                className="bg-base-100 dark:border dark:border-base-300  rounded-xl overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col"
                 variants={cardVariants}
                 whileHover="hover"
               >
@@ -85,7 +85,7 @@ const LatestBooks = () => {
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-1 justify-between">
                   <div className="space-y-1">
-                    <h3 className="text-lg font-semibold line-clamp-1 hover:text-primary transition-colors">
+                    <h3 className="text-lg playfair font-semibold line-clamp-1 hover:text-primary transition-colors">
                       {book.name}
                     </h3>
                     <p className="text-sm text-base-content/70">{book.author}</p>
@@ -101,7 +101,7 @@ const LatestBooks = () => {
                     </p>
                     <button
                       onClick={() => navigate(`/book-details/${book._id}`)}
-                      className="btn btn-sm bg-primary text-primary-content hover:bg-accent transition-all duration-300"
+                      className="btn playfair btn-sm bg-primary text-primary-content hover:bg-accent transition-all duration-300"
                     >
                       View Details
                     </button>

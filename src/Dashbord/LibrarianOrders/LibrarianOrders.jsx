@@ -56,8 +56,8 @@ const LibrarianOrders = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <section className="p-4 md:p-6">
-      <h2 className="text-4xl text-primary my-8 underline font-bold  text-center">
+    <section className="p-4 md:p-6 inter">
+      <h2 className="text-4xl text-primary my-8 underline font-bold  text-center playfair">
         <span className="text-base-content">Librarian</span>  <span className="text-base-content">Orders</span>
       </h2>
 

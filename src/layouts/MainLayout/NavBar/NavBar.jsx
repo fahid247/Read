@@ -70,7 +70,7 @@ const NavBar = () => {
       initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1, ease: "easeOut" }}
-      className="navbar sticky top-0 z-50 bg-base-100/90 backdrop-blur border-b border-base-300 px-6"
+      className="navbar playfair sticky top-0 z-50 bg-base-100/90 backdrop-blur border-b border-base-300 px-6"
     >
       {/* ================= Left ================= */}
       <div className="navbar-start gap-3">

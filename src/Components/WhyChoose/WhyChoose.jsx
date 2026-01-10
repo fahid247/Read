@@ -1,99 +1,121 @@
 import React from "react";
-import {
-  Truck,
-  BookOpen,
-  MapPin,
-  Clock,
-  ShieldCheck,
-  Headphones
-} from "lucide-react";
+import { Truck, BookOpen, MapPin, Clock, ShieldCheck, Headphones } from "lucide-react";
 import { useNavigate } from "react-router";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 const features = [
   {
     icon: <Truck className="w-10 h-10 text-primary" />,
     title: "Doorstep Delivery",
-    description:
-      "Get your favorite books delivered straight to your home, no matter where you are in Bangladesh."
+    description: "Get your favorite books delivered straight to your home, no matter where you are in Bangladesh."
   },
   {
     icon: <MapPin className="w-10 h-10 text-primary" />,
     title: "Nationwide Coverage",
-    description:
-      "Available in all 64 districts with reliable local service centers ensuring fast delivery."
+    description: "Available in all 64 districts with reliable local service centers ensuring fast delivery."
   },
   {
     icon: <Clock className="w-10 h-10 text-primary" />,
     title: "Fast & Reliable",
-    description:
-      "Our optimized delivery routes ensure timely and dependable book delivery every time."
+    description: "Our optimized delivery routes ensure timely and dependable book delivery every time."
   },
   {
     icon: <BookOpen className="w-10 h-10 text-primary" />,
     title: "Curated Book Selection",
-    description:
-      "Choose from a wide range of books added by trusted librarians and sellers."
+    description: "Choose from a wide range of books added by trusted librarians and sellers."
   },
   {
     icon: <ShieldCheck className="w-10 h-10 text-primary" />,
     title: "Secure Payments",
-    description:
-      "Multiple safe payment options with full transaction protection and order tracking."
+    description: "Multiple safe payment options with full transaction protection and order tracking."
   },
   {
     icon: <Headphones className="w-10 h-10 text-primary" />,
     title: "Dedicated Support",
-    description:
-      "Our friendly support team is always ready to help you with orders and delivery."
+    description: "Our friendly support team is always ready to help you with orders and delivery."
   }
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.15 } }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  hover: { scale: 1.05, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }
+};
+
 const WhyChoose = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
   return (
-    <section className="max-w-7xl bg-base-200 mx-auto px-4 py-16">
+    <section className="max-w-7xl mx-auto px-4 py-20 bg-base-200">
       {/* Header */}
-      <div className="text-center mb-14">
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-800">
+      <div className="text-center mb-16">
+        <h2 className="text-4xl playfair md:text-5xl font-extrabold text-primary">
           Why Choose <span className="text-primary">ReadOnRoute</span>?
         </h2>
-        <p className="mt-4 text-gray-600 max-w-3xl mx-auto">
-          ReadOnRoute connects readers, librarians, and sellers with a fast,
-          reliable, and nationwide book delivery experience.
+        <p className="mt-4 text-base-content/70 text-lg inter max-w-3xl mx-auto">
+          ReadOnRoute connects readers, librarians, and sellers with a fast, reliable, and nationwide book delivery experience.
         </p>
       </div>
 
       {/* Features Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 inter"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {features.map((feature, index) => (
-          <div
+          <motion.div
             key={index}
-            className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition duration-300"
+            className="bg-base-100 rounded-2xl p-8 cursor-pointer hover:bg-base-200 transition-all duration-300 flex flex-col items-start shadow-sm hover:shadow-lg"
+            variants={cardVariants}
+            whileHover="hover"
           >
             <div className="mb-4 flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
               {feature.icon}
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              {feature.title}
-            </h3>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              {feature.description}
-            </p>
-          </div>
+            <h3 className="text-xl font-semibold text-base-content mb-2">{feature.title}</h3>
+            <p className="text-base-content/70 text-sm leading-relaxed">{feature.description}</p>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* CTA */}
-      <div className="mt-16 text-center">
-        <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+      <div className="mt-20 text-center">
+        <motion.h3
+          className="text-2xl playfair md:text-3xl font-semibold text-primary mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           Start Your Reading Journey Today
-        </h3>
-        <p className="text-gray-600 mb-6">
+        </motion.h3>
+        <motion.p
+          className="text-base-content/70 inter mb-6 max-w-2xl mx-auto"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           Join thousands of readers who trust ReadOnRoute for their book deliveries.
-        </p>
-        <button onClick={()=>{navigate('/allbooks')}} className="btn btn-primary px-8">
+        </motion.p>
+        <motion.button
+          onClick={() => navigate("/allbooks")}
+          className="btn btn-primary px-8 py-3 playfair rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
           Explore Books
-        </button>
+        </motion.button>
       </div>
     </section>
   );

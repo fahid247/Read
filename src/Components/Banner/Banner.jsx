@@ -39,7 +39,7 @@ const Banner = () => {
   ];
 
   return (
-    <div className=" bg-base-200">
+    <div className="py-8 bg-base-200">
       <div className="h-[70vh] w-full relative">
         <Swiper
           slidesPerView={1}
@@ -61,15 +61,15 @@ const Banner = () => {
                 {/* Overlay for readability */}
                 <div className="absolute inset-0 bg-black/50 flex justify-center items-center">
                   <div className="text-center text-white max-w-5xl px-4">
-                    <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold animate__animated animate__fadeInDown">
+                    <h1 className="text-2xl playfair sm:text-4xl md:text-6xl font-bold animate__animated animate__fadeInDown">
                       {slide.title}
                     </h1>
-                    <p className="mt-4 text-sm sm:text-lg md:text-xl font-medium animate__animated animate__fadeInUp">
+                    <p className="mt-4 inter text-sm sm:text-lg md:text-xl font-medium animate__animated animate__fadeInUp">
                       {slide.subtitle}
                     </p>
                     <button
                       onClick={() => navigate("/allbooks")}
-                      className="mt-6 bg-secondary-content hover:bg-primary text-white font-semibold px-6 py-3 rounded-full transition-all duration-300"
+                      className="mt-6 bg-primary playfair hover:bg-accent text-base-100 font-semibold px-6 py-3 rounded-full transition-all duration-300"
                     >
                       All Books
                     </button>

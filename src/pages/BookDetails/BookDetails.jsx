@@ -4,10 +4,31 @@ import useAxiosSecure from "../../Hooks/UseAxiosSecure";
 import useAuth from "../../Hooks/UseAuth";
 import Swal from "sweetalert2";
 import { FaHeart } from "react-icons/fa";
-import { BookImage } from "lucide-react";
+import Loading from "../../Components/Loading/Loading";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+
+/* ================== Animations ================== */
+const fromTop = {
+  hidden: { opacity: 0, y: -60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
+const fromBottom = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut", delay: 0.15 },
+  },
+};
 
 const BookDetails = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
@@ -20,10 +41,13 @@ const BookDetails = () => {
     },
   });
 
+  if (isLoading) return <Loading />;
+
+  /* ================== Order ================== */
   const handleOrder = async (e) => {
     e.preventDefault();
-    const form = e.target;
 
+    const form = e.target;
     const orderInfo = {
       bookId: book._id,
       bookName: book.name,
@@ -38,24 +62,24 @@ const BookDetails = () => {
       librarianEmail: book.librarianEmail,
     };
 
-    Swal.fire({
-  title: "order successful!",
-  icon: "success",
-  draggable: true
-});
-
     await axiosSecure.post("/orders", orderInfo);
 
+    Swal.fire({
+      icon: "success",
+      title: "Order placed successfully!",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+
     document.getElementById("order_modal").close();
-
-    navigate('/dashboard/my-orders')
-
+    navigate("/dashboard/my-orders");
   };
-  const handleWishList = async (e) => {
-    e.preventDefault();
+
+  /* ================== Wishlist ================== */
+  const handleWishList = async () => {
     const wishInfo = {
       bookId: book._id,
-      BookImage:book.image,
+      BookImage: book.image,
       bookName: book.name,
       price: book.price,
       name: user.displayName,
@@ -64,144 +88,125 @@ const BookDetails = () => {
       librarianEmail: book.librarianEmail,
     };
 
-    Swal.fire({
-  title: "Added to wishlist",
-  icon: "success",
-  draggable: true
-});
-
     await axiosSecure.post("/wishList", wishInfo);
 
+    Swal.fire({
+      icon: "success",
+      title: "Added to wishlist",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+
     document.getElementById("wish_modal").close();
-
-    navigate('/dashboard/my-orders')
-
   };
 
-  if (isLoading) return <p className="text-center py-20">Loading...</p>;
-
   return (
-    <section className="py-16 bg-base-300 min-h-screen">
-      <div className="container mx-auto px-6 grid md:grid-cols-2 gap-10">
-        <img
-          src={book.image}
-          alt={book.name}
-          className="w-full  rounded-xl shadow-lg"
-        />
+    <section className="min-h-screen bg-base-200 py-16">
+      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center">
+        
+        {/* ================= Image (From Top) ================= */}
+        <motion.div
+          variants={fromTop}
+          initial="hidden"
+          animate="visible"
+          whileHover={{ scale: 1.04 }}
+          className="flex justify-center"
+        >
+          <img
+            src={book.image}
+            alt={book.name}
+            className="rounded-2xl shadow-2xl max-h-130 object-cover"
+          />
+        </motion.div>
 
-        <div>
-          <h2 className="text-3xl font-bold mb-2">{book.name}</h2>
-          <p className="text-lg text-gray-600 mb-4">by {book.author}</p>
+        {/* ================= Details (From Bottom) ================= */}
+        <motion.div
+          variants={fromBottom}
+          initial="hidden"
+          animate="visible"
+          className="space-y-6"
+        >
+          <div>
+            <h1 className="text-4xl font-bold text-base-content">
+              {book.name}
+            </h1>
+            <p className="text-lg text-base-content/70 mt-1">
+              by {book.author}
+            </p>
+          </div>
 
-          <p className="mb-4">{book.description}</p>
+          <p className="text-base-content/80 leading-relaxed">
+            {book.description}
+          </p>
 
-          <div className="grid grid-cols-2 gap-4 text-sm">
+          {/* Info Card */}
+          <div className="grid grid-cols-2 gap-4 bg-base-100 p-5 rounded-xl shadow-sm text-sm">
             <p><strong>Category:</strong> {book.category}</p>
             <p><strong>Language:</strong> {book.language}</p>
             <p><strong>Pages:</strong> {book.pages}</p>
             <p><strong>Publisher:</strong> {book.publisher}</p>
-            <p><strong>Rating:</strong> {book.rating}</p>
+            <p><strong>Rating:</strong> ⭐ {book.rating}</p>
             <p><strong>Status:</strong> {book.status}</p>
           </div>
 
-          <p className="text-xl font-semibold mt-6">Price: ৳{book.price}</p>
+          <p className="text-3xl font-bold text-primary">
+            ৳{book.price}
+          </p>
 
-          <div className="flex gap-2">
+          {/* Buttons */}
+          <div className="flex flex-wrap gap-4">
             <button
-            className="btn btn-primary mt-6"
-            onClick={() => document.getElementById("order_modal").showModal()}
-          >
-            Order Now
-          </button>
+              className="btn btn-primary px-8"
+              onClick={() =>
+                document.getElementById("order_modal").showModal()
+              }
+            >
+              Order Now
+            </button>
 
-          <button
-            className="btn btn-primary border-none bg-pink-500 mt-6"
-            onClick={() => document.getElementById("wish_modal").showModal()}
-          >
-            Add to Wish List <FaHeart />
-          </button>
+            <button
+              className="btn bg-pink-500 text-white hover:bg-pink-600 px-6"
+              onClick={() =>
+                document.getElementById("wish_modal").showModal()
+              }
+            >
+              <FaHeart /> Wishlist
+            </button>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Order Modal */}
+      {/* ================= Order Modal ================= */}
       <dialog id="order_modal" className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg mb-4">Place Your Order</h3>
-
           <form onSubmit={handleOrder} className="space-y-3">
-            <input
-              type="text"
-              readOnly
-              value={user?.displayName || ""}
-              className="input input-bordered w-full"
-            />
-            <input
-              type="email"
-              readOnly
-              value={user?.email || ""}
-              className="input input-bordered w-full"
-            />
-            <input
-              type="text"
-              name="phone"
-              placeholder="Phone Number"
-              required
-              className="input input-bordered w-full"
-            />
-            <textarea
-              name="address"
-              placeholder="Delivery Address"
-              required
-              className="textarea textarea-bordered w-full"
-            ></textarea>
-
+            <input readOnly value={user?.displayName} className="input input-bordered w-full" />
+            <input readOnly value={user?.email} className="input input-bordered w-full" />
+            <input name="phone" placeholder="Phone Number" className="input input-bordered w-full" required />
+            <textarea name="address" placeholder="Delivery Address" className="textarea textarea-bordered w-full" required />
             <div className="modal-action">
-              <button type="submit" className="btn btn-primary">
-                Place Order
-              </button>
-              <button
-                type="button"
-                className="btn"
-                onClick={() => document.getElementById("order_modal").close()}
-              >
+              <button className="btn btn-primary">Confirm</button>
+              <button type="button" className="btn" onClick={() => document.getElementById("order_modal").close()}>
                 Cancel
               </button>
             </div>
           </form>
         </div>
       </dialog>
-      {/* Wish Modal */}
+
+      {/* ================= Wishlist Modal ================= */}
       <dialog id="wish_modal" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg mb-4">Make your wish list</h3>
-
-          <form onSubmit={handleWishList} className="space-y-3">
-            <input
-              type="text"
-              readOnly
-              value={user?.displayName || ""}
-              className="input input-bordered w-full"
-            />
-            <input
-              type="email"
-              readOnly
-              value={user?.email || ""}
-              className="input input-bordered w-full"
-            />
-            <div className="modal-action">
-              <button type="submit" className="btn btn-primary bg-pink-500">
-                Add to Wish List
-              </button>
-              <button
-                type="button"
-                className="btn"
-                onClick={() => document.getElementById("wish_modal").close()}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+          <h3 className="font-bold text-lg mb-4">Add to Wishlist</h3>
+          <div className="modal-action">
+            <button className="btn bg-pink-500 text-white" onClick={handleWishList}>
+              Add
+            </button>
+            <button className="btn" onClick={() => document.getElementById("wish_modal").close()}>
+              Cancel
+            </button>
+          </div>
         </div>
       </dialog>
     </section>
